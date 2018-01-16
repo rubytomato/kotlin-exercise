@@ -1,6 +1,7 @@
 package com.example.exercise.logging
 
 import org.slf4j.LoggerFactory
+import java.lang.invoke.MethodHandles
 import java.time.LocalDateTime
 
 fun <T> logger(clazz: Class<T>) = LoggerFactory.getLogger(clazz)!!
@@ -15,6 +16,7 @@ fun main(args: Array<String>) {
  */
 class LoggingExercise {
     private val log = logger(LoggingExercise::class.java)
+    //private val log = logger(MethodHandles.lookup().lookupClass())
 
     init {
         log.debug("init log")

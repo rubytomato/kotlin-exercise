@@ -2,10 +2,12 @@ package com.example.exercise.json
 
 import com.example.data.Person
 import com.example.data.WeatherMap
+import com.example.exercise.logging.logger
 import com.example.type.Blood
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
+import java.lang.invoke.MethodHandles
 
 fun main(args: Array<String>) {
     JsonExercise().tryAll()
@@ -16,8 +18,10 @@ fun main(args: Array<String>) {
  *
  */
 class JsonExercise {
+    private val log = logger(MethodHandles.lookup().lookupClass())
 
     fun tryAll() {
+        log.debug("tryAll")
         readFromStringLiteral()
         readFromFile()
         readFromWeatherFile()

@@ -3,6 +3,13 @@ package com.example.exercise.lambda
 import com.example.data.Result
 import java.util.*
 
+// レシーバ付き関数リテラルの定義
+val intSum: Int.(Int) -> Int = { other ->
+    println("with Receiver. ${this} + $other")
+    // thisはレシーバオブジェクト
+    this + other
+}
+
 fun main(args: Array<String>) {
     LambdaExercise().tryAll()
 }
@@ -180,11 +187,9 @@ class LambdaExercise {
         return builder.toString().toUpperCase()
     }
 
-    val intSum: Int.(Int) -> Int = { other -> this + other }
-
     fun lambda6() {
 
-        5.intSum(5)
+        println("sum = ${5.intSum(5)}")
 
         // レシーバ付き
         val result = creator("tom", "test") {

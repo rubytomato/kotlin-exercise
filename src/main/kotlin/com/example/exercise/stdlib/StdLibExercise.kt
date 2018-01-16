@@ -20,6 +20,7 @@ class StdLibExercise {
     fun tryAll() {
         pairAndTriple()
         scopeFunctions()
+        letWithNullCheck()
 
         chk("value")
         chk(null)
@@ -111,18 +112,33 @@ class StdLibExercise {
         println(r4)
 
         // public inline fun <T, R> with(receiver: T, block: T.() -> R): R
-        val r5 = with(Result("with", "Mitty")) {
+        val r5 = Result("with", "Mitty")
+        with(r5) {
             // thisはレシーバ
             this.amount = 555
             this.change(444)
             somethingFunc(this.name)
             println(this)
-            this
         }
         println(r5)
 
         val now = getNow()
         println(now.toString())
+    }
+
+    fun letWithNullCheck() {
+        val strIsNullable: String? = null
+
+        // nullでなければlet関数を実行する
+        // 結果を?:で判定しnullの場合は例外をスローするので
+        // 戻り値はNot Nullであることが保証される
+        try {
+            val strIsNotNull: String = strIsNullable?.let {
+                it.toUpperCase()
+            } ?: error("String must Not-NULL")
+        } catch (e: Exception) {
+            println(e)
+        }
     }
 
     // checkNotNull
