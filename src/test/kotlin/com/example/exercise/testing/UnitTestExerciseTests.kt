@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.*
 import org.junit.*
 
 import org.junit.rules.ExpectedException
+import org.junit.rules.TestName
 import java.time.LocalDate
 
 class UnitTestExerciseTests {
@@ -11,16 +12,21 @@ class UnitTestExerciseTests {
     private val sut: UnitTestExercise = UnitTestExercise()
 
     @Rule
-    private val expectedException: ExpectedException = ExpectedException.none()
+    @JvmField
+    val expectedException: ExpectedException = ExpectedException.none()
+
+    @Rule
+    @JvmField
+    val testName: TestName = TestName()
 
     @Before
     fun setup() {
-        println("Before")
+        println("Before: ${testName.methodName}")
     }
 
     @After
     fun tearDown() {
-        println("After")
+        println("After:  ${testName.methodName}")
     }
 
     @Test
@@ -32,7 +38,7 @@ class UnitTestExerciseTests {
         assertThat(actual).isEqualTo("2018/01/22")
     }
 
-    @Ignore
+    @Ignore("未実装")
     @Test
     fun errorIfNot() {
         expectedException.expect(IllegalArgumentException::class.java)
