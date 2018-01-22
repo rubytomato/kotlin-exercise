@@ -5,6 +5,7 @@ import com.example.type.Blood
 import java.time.LocalDate
 import java.util.Random
 import java.util.stream.Collectors
+import java.util.Comparator
 
 fun main(args: Array<String>) {
     StreamsExercise().tryAll()
@@ -111,13 +112,16 @@ class StreamsExercise {
     }
 
     /*
-    fun demoJavaStream3() {
-        val byJvmBlood = java.util.Comparator.comparing(Person::blood)
-        val byJvmBirthDay = java.util.Comparator.comparing(Person::birthDay)
+    fun demoJvmStream3() {
+        val byJvmBlood = Comparator.comparing(Person::blood)
+        val byJvmBirthDay = Comparator.comparing(Person::birthDay)
 
         // error
-        //val byJvmBirthDay = java.util.Comparator.comparing(Person::birthDay,
-        //        java.util.Comparator.naturalOrder<Person>())
+        // val nf = Comparator.nullsFirst(Comparator.reverseOrder())
+        // val nl = Comparator.nullsLast(Comparator.naturalOrder())
+
+        // error
+        // val byJvmBirthDay2 = Comparator.comparing(Person::birthDay, Comparator.nullsFirst(Comparator.reverseOrder()))
 
         val javaComparator = byJvmBlood.thenComparing(byJvmBirthDay)
 
@@ -134,4 +138,5 @@ class StreamsExercise {
         val newList = personList.sorted()
         newList.joinToString(" , ").also { println(it) }
     }
+
 }

@@ -4,7 +4,7 @@ import com.example.type.Blood
 import java.time.LocalDate
 import java.util.*
 
-data class Person(val name: String, val age: Int, val blood: Blood): Comparable<Person> {
+data class Person(val name: String, val age: Int, val blood: Blood) : Comparable<Person> {
 
     var birthDay: LocalDate? = null
 
@@ -16,7 +16,7 @@ data class Person(val name: String, val age: Int, val blood: Blood): Comparable<
         val comparator = byBlood.then(byBirthDay)
     }
 
-    constructor(name: String, age: Int, blood: Blood, birthDay: LocalDate): this(name, age, blood) {
+    constructor(name: String, age: Int, blood: Blood, birthDay: LocalDate) : this(name, age, blood) {
         this.birthDay = birthDay
     }
 

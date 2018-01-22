@@ -31,6 +31,10 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+kapt {
+    useBuildCache = true
+}
+
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin/'
     test.java.srcDirs += 'src/test/kotlin/'
