@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.10'
+        kotlinVersion = '1.2.20'
         jacksonVersion = '2.9.3'
         shadowVersion = '2.0.2'
     }
@@ -51,7 +51,7 @@ dependencies {
     // logging
     compile("ch.qos.logback:logback-classic:1.2.3")
     // Kotlin Library
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     // test
     testCompile("junit:junit:4.12")

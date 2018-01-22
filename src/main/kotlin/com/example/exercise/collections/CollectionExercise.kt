@@ -14,11 +14,15 @@ class CollectionExercise {
     fun tryAll() {
         readOnlyList()
         mutableList()
+
         readOnlySet()
         mutableSet()
-        readOnlyMap()
-        mutableMap()
-        nullFilter()
+
+        demoNullFilter()
+
+        demoCollectionWithEach()
+
+        demoConvert()
     }
 
     private fun readOnlyList() {
@@ -79,22 +83,7 @@ class CollectionExercise {
         set2.clear()
     }
 
-    private fun readOnlyMap() {
-        val map = mapOf("A" to 1, "B" to 2, "C" to 3)
-        // map.put("D", 4) compile error
-        println(map)
-        // map.clear() compile error
-    }
-
-    private fun mutableMap() {
-        val map = mutableMapOf("A" to 1, "B" to 2, "C" to 3)
-        map.put("D", 4)
-        map["C"] = 9
-        println(map)
-        map.clear()
-    }
-
-    private fun nullFilter() {
+    private fun demoNullFilter() {
         val nullableList: List<Int?> = listOf(1, 2, null, 4, null, 6)
         val list = nullableList.filterNotNull()
         println(list)
@@ -102,10 +91,37 @@ class CollectionExercise {
         val nullableSet: Set<String?> = setOf("A", "B", null, "D", null, "F")
         val set = nullableSet.filterNotNull()
         println(set)
+    }
 
-        val nullableMap: Map<String, Int?> = mapOf("A" to 1, "B" to 2, "C" to null, "D" to null, "E" to 5)
-        val map: Map<String, Int> =  nullableMap.filterValues { it != null }.mapValues { it.value ?: 0 }
-        println(map)
+    private fun demoCollectionWithEach() {
+        val list = listOf("A", "B", "C", "D", "E")
+
+        // Kotlin 1.1
+        // 戻り値はList<String>
+        val r1 = list.onEach { println(it) }
+
+        // 戻り値はUnit
+        val r2 = list.forEach { println(it) }
+    }
+
+    private fun demoConvert() {
+        val list = listOf("A", "B", "C", "D")
+        val set = list.toSet()
+
+        list.joinToString().also { println(it) }
+        set.joinToString().also { println(it) }
+
+        val mutableList: MutableCollection<String> = mutableListOf()
+        val mutableSet: MutableCollection<String> = mutableSetOf()
+
+        list.toCollection(mutableList)
+        list.toCollection(mutableSet)
+
+        mutableList.add("E")
+        mutableSet.add("F")
+
+        mutableList.joinToString().also { println(it) }
+        mutableSet.joinToString().also { println(it) }
     }
 
 }

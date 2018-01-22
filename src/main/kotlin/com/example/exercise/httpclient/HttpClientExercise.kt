@@ -23,28 +23,49 @@ class HttpClientExercise {
     }
 
     fun tryAll() {
-        getApi()
+        getApiWithAsyncMode()
+        getApiWithBlocking()
     }
 
-    fun getApi() {
+    // Async mode
+    fun getApiWithAsyncMode() {
+        println("Async mode api call before")
         SAMPLE_URL.httpGet().responseString { _, _, result ->
             when(result) {
                 is Result.Success -> {
-                    val data = result.getAs<String>()
-                    data?.let {
+                    val rawData = result.get()
+                    rawData.let {
                         val mapper = jacksonObjectMapper()
-                        val jsonData: WeatherMap = mapper.readValue(data)
+                        val jsonData = mapper.readValue<WeatherMap>(rawData)
                         println(jsonData)
                     }
                 }
                 is Result.Failure -> {
-                    val error = result.getAs<String>()
-                    error?.let {
-                        println(error)
-                    }
+                    error("api call faiure: ${result.get()}")
                 }
             }
         }
+        .timeout(10)
+        println("Async mode api call after")
     }
 
+    //Blocking mode
+    fun getApiWithBlocking() {
+        println("Blocking mode api call before")
+        val (_, _, result) = SAMPLE_URL.httpGet().responseString()
+        val weatherData = when(result) {
+            is Result.Success -> {
+                result.get().let {
+                    val mapper = jacksonObjectMapper()
+                    val jsonData = mapper.readValue<WeatherMap>(it)
+                    println(jsonData)
+                    jsonData //return value.
+                }
+            }
+            is Result.Failure -> {
+                error("api call failure: ${result.get()}")
+            }
+        }
+        println("Blocking mode api call after")
+    }
 }

@@ -16,11 +16,12 @@ class RangeExercise {
     private val log = logger(RangeExercise::class.java)
 
     fun tryAll() {
-        inForLoop()
-        inLambdas()
+        demoForLoop()
+        demoLambdas()
+        demoRangeToCollection()
     }
 
-    fun inForLoop() {
+    fun demoForLoop() {
         val start = 1
         val end = 10
 
@@ -41,7 +42,7 @@ class RangeExercise {
         }
     }
 
-    fun inLambdas() {
+    fun demoLambdas() {
         val start = 1
         val end = 10
 
@@ -64,6 +65,20 @@ class RangeExercise {
         (start..end).filter { it % 2 == 0 }.forEach {
             even -> println(even)
         }
+
+        // Kotlin 1.1
+        (start..end).onEach {
+            println(it)
+        }
     }
 
+    fun demoRangeToCollection() {
+        val a = arrayOf('a'..'z').flatMap { it }
+        // コレクションにはflattenがある
+        val b = listOf('A'..'Z').flatten()
+        val c = a.plus(b) // a + b
+        a.joinToString(", ","[","]").also { println(it) }
+        b.joinToString(", ","[","]").also { println(it) }
+        c.joinToString(", ","[","]").also { println(it) }
+    }
 }

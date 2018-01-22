@@ -180,13 +180,6 @@ class LambdaExercise {
         return result
     }
 
-    private fun upperString(actions: StringBuilder.() -> Unit): String {
-        val builder = StringBuilder()
-        // ラムダ式を実行
-        builder.actions()
-        return builder.toString().toUpperCase()
-    }
-
     fun lambda6() {
 
         println("sum = ${5.intSum(5)}")
@@ -206,13 +199,6 @@ class LambdaExercise {
             result.amount = 100
             result.change(200)
         }
-
-        val str = upperString {
-            append("Frameworks for ")
-            append("Server-side Development ")
-            append("with Kotlin")
-        }
-        println(str)
     }
 
     private fun numIsEvenNumber(n: Int): Boolean = n % 2 == 0
@@ -248,7 +234,6 @@ class LambdaExercise {
         if (::numIsEvenNumber.invoke(2)) {
             println("even")
         }
-
     }
 
 }

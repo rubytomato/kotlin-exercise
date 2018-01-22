@@ -1,7 +1,10 @@
 package com.example.exercise.file
 
+import com.github.kittinunf.fuel.core.requests.write
+import com.github.kittinunf.fuel.core.requests.writeln
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.net.URL
 import java.util.*
 
@@ -34,6 +37,8 @@ class FileExercise {
 
         demoFileNotFound()
         demoPropertyFileReader()
+
+        demoFileWrite()
     }
 
     // File.readLines(charset: Charset = Charsets.UTF_8): List<String>
@@ -142,6 +147,20 @@ class FileExercise {
         }
         // useを使うとStreamを自動的に閉じてくれる
         println(prop.toList().joinToString(" , "))
+    }
+
+    fun demoFileWrite() {
+        val textLines = listOf("first line", "2nd line", "3rd line")
+
+        val file = File("newFile,txt").apply {
+            if (exists()) delete()
+        }
+        FileOutputStream(file).use { writer ->
+            textLines.forEach {
+                writer.write(it)
+                writer.writeln()
+            }
+        }
     }
 
 }

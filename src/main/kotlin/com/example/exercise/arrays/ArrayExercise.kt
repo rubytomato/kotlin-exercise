@@ -13,26 +13,28 @@ fun main(args: Array<String>) {
 class ArrayExercise {
 
     fun tryAll() {
-        factoryMethod()
-        constructorWithLambda()
-        indeies()
-        convert()
+        demoFactoryMethod()
+        demoConstructorWithLambda()
+        demoIndeies()
+
+        demoConvert()
+        demoToString()
     }
 
-    fun factoryMethod() {
+    fun demoFactoryMethod() {
         val array = arrayOf("A", "B", "C", "D", "E")
-        println(array.joinToString())
+        array.joinToString().also { println(it) }
 
         // intの配列を生成する
         val intArray = intArrayOf(1, 2, 3, 4, 5)
-        println(intArray.joinToString(": "))
+        intArray.joinToString(": ").also { println(it) }
 
         // 空の配列を生成する
         val emptyArray = emptyArray<String>()
         println(emptyArray.size)
     }
 
-    fun constructorWithLambda() {
+    fun demoConstructorWithLambda() {
         val array = Array(size = 5, init = { i ->
             if (i % 2 == 0) {
                 "*"
@@ -40,10 +42,10 @@ class ArrayExercise {
                 Random().nextInt(i * 10).toString()
             }
         })
-        println(array.joinToString(",", "<", ">"))
+        array.joinToString(",", "<", ">").also { println(it) }
     }
 
-    fun indeies() {
+    fun demoIndeies() {
         val array = arrayOf("A", "B", "C", "B", "D", "A")
 
         for (i in array.indices) {
@@ -51,32 +53,37 @@ class ArrayExercise {
         }
 
         for ((index, value) in array.withIndex()) {
-            println("index:$index, value:$value")
+            println("index=$index, value=$value")
         }
 
         for ((index, value) in array.distinct().withIndex()) {
-            println("index:$index, value:$value")
+            println("index=$index, value=$value")
         }
     }
 
-    private fun convert() {
-        val list = listOf("A", "B", "C", "D")
-        val set = list.toSet()
+    fun demoConvert() {
+        val array = arrayOf("A", "B", "C", "B", "D", "A")
 
-        println(list.joinToString())
-        println(set.joinToString())
+        val list = array.toList()
+        list.joinToString().also { println(it) }
 
-        val mutableList: MutableCollection<String> = mutableListOf()
-        val mutableSet: MutableCollection<String> = mutableSetOf()
+        // ArraysUtilJVM.asListへ処理を委譲
+        // 内部でjava.util.Arrays.asListを呼び出している
+        val list2 = array.asList()
 
-        list.toCollection(mutableList)
-        list.toCollection(mutableSet)
+        val set = array.toSet()
+        set.joinToString().also { println(it) }
 
-        mutableList.add("E")
-        mutableSet.add("F")
+    }
 
-        println(mutableList.joinToString())
-        println(mutableSet.joinToString())
+    fun demoToString() {
+        val array = arrayOf("A", "B", "C", "D")
+        array.toString().also { println(it) }
+        // [Ljava.lang.String;@214c265e
+        array.joinToString().also { println(it) }
+        // A, B, C, D
+        array.contentToString().also { println(it) }
+        // [A, B, C, D]
     }
 
 }
