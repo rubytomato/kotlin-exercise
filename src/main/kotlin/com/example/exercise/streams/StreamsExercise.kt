@@ -6,6 +6,7 @@ import java.time.LocalDate
 import java.util.Random
 import java.util.stream.Collectors
 import java.util.Comparator
+import java.util.function.Function
 
 fun main(args: Array<String>) {
     StreamsExercise().tryAll()
@@ -46,6 +47,7 @@ class StreamsExercise {
 
         demoJvmStream()
         demoJvmStream2()
+        demoJvmStream3()
 
         demoComparable()
     }
@@ -68,8 +70,8 @@ class StreamsExercise {
 
         val newList = personList
                 .onEach { println(it) }
-                //.sortedBy { it.age }
                 .sortedWith(compareBy(Person::age, Person::name))
+                // 次行のようにもかける
                 //.sortedWith(compareBy({ it.age }, { it.name }))
                 .map { it.name }
                 .toList()
@@ -79,8 +81,14 @@ class StreamsExercise {
     fun demoIterable3() {
         println("demoIterable3")
 
+        val byBlood = compareBy(Person::blood)
+        val byBirthDay = compareBy(nullsLast(), Person::birthDay)
+        val comparator = byBlood.then(byBirthDay)
+
         val newList = personList
-                .sortedWith(Person.comparator)
+                .onEach { println(it) }
+                .sortedWith(comparator)
+                .map { it.name.toUpperCase() }
                 .toList()
         newList.joinToString(" , ").also { println(it) }
     }
@@ -101,9 +109,8 @@ class StreamsExercise {
     fun demoJvmStream2() {
         println("demoJvmStream2")
 
-        val newList = personList.stream()
+        val newList: List<String> = personList.stream()
                 .peek { println(it) }
-                //.sorted(Comparator.comparing(Person::age))
                 .sorted(Comparator.comparing(Person::age)
                                   .thenComparing(Person::name))
                 .map { it.name }
@@ -111,26 +118,23 @@ class StreamsExercise {
         newList.joinToString(" , ").also { println(it) }
     }
 
-    /*
     fun demoJvmStream3() {
-        val byJvmBlood = Comparator.comparing(Person::blood)
-        val byJvmBirthDay = Comparator.comparing(Person::birthDay)
+        println("demoJvmStream3")
 
-        // error
-        // val nf = Comparator.nullsFirst(Comparator.reverseOrder())
-        // val nl = Comparator.nullsLast(Comparator.naturalOrder())
+        // public static <T, U extends Comparable<? super U>> Comparator<T> comparing(Function<? super T, ? extends U> keyExtractor)
+        val byBlood = Comparator.comparing(Person::blood)
+        // public static <T, U> Comparator<T> comparing(Function<? super T, ? extends U> keyExtractor, Comparator<? super U> keyComparator)
+        val byBirthDay = Comparator.comparing(Function<Person, LocalDate?>(Person::birthDay), Comparator.nullsLast(Comparator.reverseOrder()))
 
-        // error
-        // val byJvmBirthDay2 = Comparator.comparing(Person::birthDay, Comparator.nullsFirst(Comparator.reverseOrder()))
+        val comparator = byBlood.thenComparing(byBirthDay)
 
-        val javaComparator = byJvmBlood.thenComparing(byJvmBirthDay)
-
-        val newList = personList.stream()
-                .sorted(javaComparator)
+        val newList: List<String> = personList.stream()
+                .peek { println(it) }
+                .sorted(comparator)
+                .map { it.name.toUpperCase() }
                 .collect(Collectors.toList())
         newList.joinToString(" , ").also { println(it) }
     }
-    */
 
     fun demoComparable() {
         println("demoComparable")

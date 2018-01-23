@@ -2,19 +2,10 @@ package com.example.data
 
 import com.example.type.Blood
 import java.time.LocalDate
-import java.util.*
 
 data class Person(val name: String, val age: Int, val blood: Blood) : Comparable<Person> {
 
     var birthDay: LocalDate? = null
-
-    companion object {
-        val byAge: Comparator<Person> = compareByDescending(Person::age)
-        val byName = compareBy(Person::name)
-        val byBlood = compareBy(Person::blood)
-        val byBirthDay = compareBy(nullsLast(), Person::birthDay)
-        val comparator = byBlood.then(byBirthDay)
-    }
 
     constructor(name: String, age: Int, blood: Blood, birthDay: LocalDate) : this(name, age, blood) {
         this.birthDay = birthDay
