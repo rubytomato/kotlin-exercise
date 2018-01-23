@@ -23,9 +23,11 @@ class CollectionExercise {
         demoCollectionWithEach()
 
         demoConvert()
+
+        demoArrayList()
     }
 
-    private fun readOnlyList() {
+    fun readOnlyList() {
         val list1 = listOf(1, 2, 3)
         // list.add(4) compile error
         println(list1)
@@ -40,7 +42,7 @@ class CollectionExercise {
         println(list3)
     }
 
-    private fun mutableList() {
+    fun mutableList() {
         val list1 = mutableListOf(1, 2, 3)
         list1.add(4)
         println(list1)
@@ -55,7 +57,7 @@ class CollectionExercise {
         list2.clear()
     }
 
-    private fun readOnlySet() {
+    fun readOnlySet() {
         val set1 = setOf("d", "c", "b")
         // set1.add("a") compile error
         println(set1)
@@ -67,7 +69,7 @@ class CollectionExercise {
         // set2.clear() compile error
     }
 
-    private fun mutableSet() {
+    fun mutableSet() {
         val set1 = mutableSetOf("d", "c", "b")
         set1.add("a")
         println(set1)
@@ -83,7 +85,7 @@ class CollectionExercise {
         set2.clear()
     }
 
-    private fun demoNullFilter() {
+    fun demoNullFilter() {
         val nullableList: List<Int?> = listOf(1, 2, null, 4, null, 6)
         val list = nullableList.filterNotNull()
         println(list)
@@ -93,7 +95,7 @@ class CollectionExercise {
         println(set)
     }
 
-    private fun demoCollectionWithEach() {
+    fun demoCollectionWithEach() {
         val list = listOf("A", "B", "C", "D", "E")
 
         // Kotlin 1.1
@@ -104,7 +106,7 @@ class CollectionExercise {
         val r2 = list.forEach { println(it) }
     }
 
-    private fun demoConvert() {
+    fun demoConvert() {
         val list = listOf("A", "B", "C", "D")
         val set = list.toSet()
 
@@ -122,6 +124,17 @@ class CollectionExercise {
 
         mutableList.joinToString().also { println(it) }
         mutableSet.joinToString().also { println(it) }
+    }
+
+    fun demoArrayList() {
+        println("*** demoArrayList ***")
+        // java.util.ArrayList<E>
+        val list: MutableList<String> = ArrayList<String>()
+        list.add("A")
+        list.add("B")
+        list.add("C")
+        list.add("D")
+        list.joinToString().also { println(it) }
     }
 
 }

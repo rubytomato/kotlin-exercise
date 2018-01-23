@@ -53,7 +53,7 @@ class StreamsExercise {
     }
 
     fun demoIterable() {
-        println("demoIterable")
+        println("*** demoIterable ***")
 
         val newList = numList
                 .onEach { println(it) }
@@ -66,7 +66,7 @@ class StreamsExercise {
     }
 
     fun demoIterable2() {
-        println("demoIterable2")
+        println("*** demoIterable2 ***")
 
         val newList = personList
                 .onEach { println(it) }
@@ -79,7 +79,7 @@ class StreamsExercise {
     }
 
     fun demoIterable3() {
-        println("demoIterable3")
+        println("*** demoIterable3 ***")
 
         val byBlood = compareBy(Person::blood)
         val byBirthDay = compareBy(nullsLast(), Person::birthDay)
@@ -94,7 +94,7 @@ class StreamsExercise {
     }
 
     fun demoJvmStream() {
-        println("demoJvmStream")
+        println("*** demoJvmStream ***")
 
         val newList: List<String> = numList.stream()
                 .peek { println(it) }
@@ -107,7 +107,7 @@ class StreamsExercise {
     }
 
     fun demoJvmStream2() {
-        println("demoJvmStream2")
+        println("*** demoJvmStream2 ***")
 
         val newList: List<String> = personList.stream()
                 .peek { println(it) }
@@ -119,7 +119,7 @@ class StreamsExercise {
     }
 
     fun demoJvmStream3() {
-        println("demoJvmStream3")
+        println("*** demoJvmStream3 ***")
 
         // public static <T, U extends Comparable<? super U>> Comparator<T> comparing(Function<? super T, ? extends U> keyExtractor)
         val byBlood = Comparator.comparing(Person::blood)
@@ -137,7 +137,7 @@ class StreamsExercise {
     }
 
     fun demoComparable() {
-        println("demoComparable")
+        println("*** demoComparable ***")
 
         val newList = personList.sorted()
         newList.joinToString(" , ").also { println(it) }
