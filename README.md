@@ -14,4 +14,6 @@ Javaプログラマー向けのKotlin学習用サンプルプロジェクトで�
 
 サンプルコードは`com.example.exercise.logging`パッケージにあります。
 
+## Testingフレームワーク
 
+サンプルコードは`com.example.exercise.testing`パッケージにあります。`
