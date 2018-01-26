@@ -1,73 +1,136 @@
 package com.example.exercise.testing
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import java.io.File
-import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
+
+object TestFileUtils {
+    fun getResourceFile(fileName: String, dir: String = "data/template"): Path =
+        Paths.get(javaClass.classLoader.getResource("$dir/$fileName").toURI())
+}
+
+/**
+ * リソースファイルを一時ディレクトリへコピーする
+ *
+ */
+fun TemporaryFolder.copyFile(srcFileName: String, dstFileName: String) {
+    val srcPath: Path = TestFileUtils.getResourceFile(srcFileName)
+    val dstPath: Path = Paths.get(root.absolutePath, dstFileName)
+    Files.copy(srcPath, dstPath)
+}
+
+/**
+ * 一時ディレクトリ内にあるファイルのパスを返す
+ *
+ */
+fun TemporaryFolder.getPath(fileName: String): Path =
+    Paths.get(root.absolutePath, fileName)
+
+fun Path.dump() {
+    Files.readAllLines(this).forEach { println(it) }
+}
+fun Properties.dump() {
+    toList().joinToString(", ").also { println(it) }
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class TestDataJson(val name: String, val description: String, val price: Int)
 
 class TemporaryFolderExerciseTests {
 
-    companion object {
-        fun loader(name: String): Path {
-            val url: URL = ClassLoader.getSystemResource(name)
-            return File(url.file).toPath()
-        }
-        fun copy(srcTemplateFile: String, root: String, destFile: String): Unit {
-            val src = loader("data/template/$srcTemplateFile")
-            val dest = Paths.get(root, destFile)
-            Files.copy(src, dest)
-        }
-    }
-
-    @Rule
-    @JvmField
+    //@Rule
+    //@JvmField
+    @get:Rule
     val tempFolder: TemporaryFolder = TemporaryFolder()
-    lateinit var root: String
+
+    val rootPath: Path
+        get() = tempFolder.root.toPath()
 
     @Before
     fun setup() {
         println("setup: root=${tempFolder.root}")
-        root = tempFolder.root.toString()
+        println("rootPath=$rootPath")
     }
 
     @After
     fun tearDown() {
         println("tear down:")
-        //tempFolder.delete()
     }
 
     @Test
-    fun test1() {
-        println("test1")
-        // setup
-        copy("test1.txt", root, "demo.txt")
+    fun `test file copy`() {
+        println("test file copy")
 
-        // exercise
-        val testFile = Paths.get(root, "demo.txt").also { println(it.toAbsolutePath().toString()) }
+        tempFolder.copyFile("template.txt","test.txt")
 
-        Files.readAllLines(testFile).forEach {
-            println(it)
-        }
+        val testFile = tempFolder.getPath("test.txt").also { println(it.toAbsolutePath().toString()) }
+
+        testFile.dump()
+
+        // 一時ディレクトリにコピーしたファイルなので削除しても問題ない
+        testFile.toFile().delete()
     }
 
     @Test
-    fun test2() {
-        println("test2")
-        // setup
-        copy("test2.txt", root, "demo.txt")
+    fun `test file write`() {
+        println("test file write")
 
-        // exercise
-        val testFile = Paths.get(root, "demo.txt").also { println(it.toAbsolutePath().toString()) }
+        val testFile = tempFolder.newFile("test.txt").toPath().also { println(it.toAbsolutePath().toString()) }
 
-        Files.readAllLines(testFile).forEach {
-            println(it)
+        testFile.dump()
+
+        val textLines = listOf("first line", "2nd line", "3rd line")
+
+        Files.write(testFile, textLines)
+
+        testFile.dump()
+    }
+
+    @Test
+    fun `test file delete`() {
+        println("test file delete")
+
+        val testFile: Path = TestFileUtils.getResourceFile("template.txt")
+
+        testFile.dump()
+
+        // 削除するとリソースディレクトリ下のファイルが削除されてしまう
+        //testFile.toFile().delete()
+    }
+
+    @Test
+    fun `test read property file`() {
+        println("test read property file")
+
+        val testFile: Path = TestFileUtils.getResourceFile("test.properties", "data/config")
+
+        val prop = Properties().apply {
+            Files.newInputStream(testFile).use { reader ->
+                load(reader)
+            }
         }
+        prop.dump()
+    }
+
+    @Test
+    fun `test read json file`() {
+        println("test read json file")
+
+        val testFile: Path = TestFileUtils.getResourceFile("template.json")
+
+        val jsonData: TestDataJson = jacksonObjectMapper()
+                .readValue(testFile.toFile())
+
+        jsonData.also { println(it) }
     }
 
 }
