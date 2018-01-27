@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.20'
+        kotlinVersion = '1.2.21'
         jacksonVersion = '2.9.3'
         shadowVersion = '2.0.2'
     }
@@ -29,10 +29,6 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-kapt {
-    useBuildCache = true
 }
 
 sourceSets {
