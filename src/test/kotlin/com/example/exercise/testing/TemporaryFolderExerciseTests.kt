@@ -3,19 +3,17 @@ package com.example.exercise.testing
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.rules.TemporaryFolder
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.time.LocalDate
 import java.util.*
 
 object TestFileUtils {
     fun getResourceFile(fileName: String, dir: String = "data/template"): Path =
-        Paths.get(javaClass.classLoader.getResource("$dir/$fileName").toURI())
+        Paths.get(this.javaClass.classLoader.getResource("$dir/$fileName").toURI())
 }
 
 /**
@@ -23,7 +21,8 @@ object TestFileUtils {
  *
  */
 fun TemporaryFolder.copyFile(srcFileName: String, dstFileName: String) {
-    val srcPath: Path = TestFileUtils.getResourceFile(srcFileName)
+    //val srcPath: Path = TestFileUtils.getResourceFile(srcFileName)
+    val srcPath: Path = Paths.get(this.javaClass.classLoader.getResource(srcFileName).toURI())
     val dstPath: Path = Paths.get(root.absolutePath, dstFileName)
     Files.copy(srcPath, dstPath)
 }
@@ -47,9 +46,17 @@ data class TestDataJson(val name: String, val description: String, val price: In
 
 class TemporaryFolderExerciseTests {
 
-    //@Rule
-    //@JvmField
-    @get:Rule
+    /* クラスルールを適用する場合
+    companion object {
+        @ClassRule
+        @JvmField
+        val tempFolder: TemporaryFolder = TemporaryFolder()
+    }
+    */
+
+    @Rule
+    @JvmField
+    //@get:Rule
     val tempFolder: TemporaryFolder = TemporaryFolder()
 
     val rootPath: Path
@@ -70,7 +77,7 @@ class TemporaryFolderExerciseTests {
     fun `test file copy`() {
         println("test file copy")
 
-        tempFolder.copyFile("template.txt","test.txt")
+        tempFolder.copyFile("data/template/template.txt","test.txt")
 
         val testFile = tempFolder.getPath("test.txt").also { println(it.toAbsolutePath().toString()) }
 
@@ -88,7 +95,7 @@ class TemporaryFolderExerciseTests {
 
         testFile.dump()
 
-        val textLines = listOf("first line", "2nd line", "3rd line")
+        val textLines = listOf("first line", "2nd line", "3rd line", LocalDate.of(2018, 1, 26).toString())
 
         Files.write(testFile, textLines)
 
@@ -127,8 +134,7 @@ class TemporaryFolderExerciseTests {
 
         val testFile: Path = TestFileUtils.getResourceFile("template.json")
 
-        val jsonData: TestDataJson = jacksonObjectMapper()
-                .readValue(testFile.toFile())
+        val jsonData: TestDataJson = jacksonObjectMapper().readValue(testFile.toFile())
 
         jsonData.also { println(it) }
     }
