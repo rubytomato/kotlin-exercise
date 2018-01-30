@@ -51,7 +51,7 @@ dependencies {
     // logging
     compile("ch.qos.logback:logback-classic:1.2.3")
     // Kotlin Library
-    compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     // test
     testCompile("junit:junit:4.12")
