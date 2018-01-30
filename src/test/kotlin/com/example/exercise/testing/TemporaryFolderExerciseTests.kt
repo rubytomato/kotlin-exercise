@@ -11,11 +11,6 @@ import java.nio.file.Paths
 import java.time.LocalDate
 import java.util.*
 
-object TestFileUtils {
-    fun getResourceFile(fileName: String, dir: String = "data/template"): Path =
-        Paths.get(this.javaClass.classLoader.getResource("$dir/$fileName").toURI())
-}
-
 /**
  * リソースファイルを一時ディレクトリへコピーする
  *
