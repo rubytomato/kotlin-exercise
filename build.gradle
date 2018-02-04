@@ -56,4 +56,6 @@ dependencies {
     // test
     testCompile("junit:junit:4.12")
     testCompile("org.assertj:assertj-core:3.9.0")
+    // mock server
+    testCompile("com.github.tomakehurst:wiremock:2.14.0")
 }
